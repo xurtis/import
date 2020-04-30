@@ -13,7 +13,7 @@ __import_fetch () {
 	kind=$1; shift
 	lib=$1; shift
 
-	echo "${__IMPORT_INSTALL_DIR}/${kind}/${dest}"
+	echo "${__IMPORT_INSTALL_DIR}/${kind}/${lib}.sh"
 }
 
 import () {
