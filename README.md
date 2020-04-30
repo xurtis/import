@@ -50,4 +50,4 @@ import-update` with `import` already sourced as described above.
 
 ## Libraries
 
- * [color](color.md)
+ * [color](docs/color.md)
