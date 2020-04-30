@@ -30,5 +30,5 @@ update_import () {
 		-f "${IMPORT_UPDATE_LOCATION}" \
 		--strip-components 1
 
-	source "${IMPORT_INIT}"
+	. "${IMPORT_INIT}"
 }

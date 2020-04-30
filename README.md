@@ -8,7 +8,7 @@ script:
 
 ```sh
 which shell_import_defined 2&>1 > /dev/null \
-		|| source <(curl -Ls https://xurtis.pw/import/import.sh)
+		|| . <(curl -Ls https://xurtis.pw/import/import.sh)
 ```
 
 Once that line is added any of the libraries provided by this repository

@@ -41,7 +41,7 @@ import () {
 		return
 	fi
 
-	source "${file}"
+	. "${file}"
 }
 
 run () {
@@ -52,10 +52,10 @@ run () {
 
 	# Execute in a subshell
 	( \
-		source <(curl -Ls https://xurtis.pw/import/import.sh); \
+		. <(curl -Ls https://xurtis.pw/import/import.sh); \
 		file=$(__import_fetch "libs" $@); \
 		if [ -f "${file}" ]; then \
-			source $(__import_fetch "commands" $@); \
+			. $(__import_fetch "commands" $@); \
 		else \
 			echo "Could not run: $1" > /dev/stderr && false \
 			return; \

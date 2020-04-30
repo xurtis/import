@@ -12,5 +12,5 @@ update_import
 cat <<__END
 To use a local copy of import add the following line to your init script:
 
-$(span $BOLD "source ${IMPORT_INIT}")
+$(span $BOLD ". ${IMPORT_INIT}")
 __END
