@@ -16,9 +16,9 @@ can be added using the `import` command.
 For example:
 
 ```sh
-import colors
+import color
 
-echo -e "This is $(colorize "${YELLOW};${BOLD}" "exciting")!"
+echo "This is $(span $YELLOW_FG $BOLD "exciting")!"
 ```
 
 You can also run command scripts from this repository with the `run`
