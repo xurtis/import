@@ -23,3 +23,7 @@ echo -e "This is $(colorize "${YELLOW};${BOLD}" "exciting")!"
 
 You can also run command scripts from this repository with the `run`
 command.
+
+## Libraries
+
+ * [color](color.md)
