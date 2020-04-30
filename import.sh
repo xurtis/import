@@ -21,7 +21,7 @@ import () {
 	src="https://xurtis.pw/import/libs/${lib}.sh"
 	dest="$(realpath -m ${cache_dir}/${lib}.sh)"
 
-	if ! curl -Ls -o "${dest}" "${src}"; then
+	if ! curl -Lfs -o "${dest}" "${src}"; then
 		echo "Could not import library: ${lib}" && false
 		return
 	fi
