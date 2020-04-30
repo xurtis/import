@@ -3,7 +3,8 @@
 # Tools for working with a local install of `import`
 
 # Location of current tarball
-IMPORT_GITHUB_URL="https://github.com/xurtis/import/archive/master.tar.gz"
+IMPORT_GITHUB_BASE="https://github.com/xurtis/import"
+IMPORT_GITHUB_URL="${IMPORT_GITHUB_BASE}/archive/master.tar.gz"
 
 # Get data for the current user
 IMPORT_UID=$(id -u)

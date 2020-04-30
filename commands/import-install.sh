@@ -3,6 +3,10 @@ set -e
 
 import import-tools
 import color
+
+echo -n "Installing $(span $BOLD "${IMPORT_GITHUB_BASE}") "
+echo    "to $(span $BOLD "${IMPORT_INSTALL_LOCATION}")"
+
 update_import
 
 cat <<__END
