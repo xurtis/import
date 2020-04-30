@@ -18,7 +18,6 @@ __import_fetch () {
 	dest="$(realpath -m ${cache_dir}/${kind}/${lib}.sh)"
 
 	if ! curl -Lfs -o "${dest}" "${src}"; then
-		echo "Could not find: ${lib}" > /dev/stderr && false
 		return
 	fi
 
@@ -34,7 +33,7 @@ import () {
 	file=$(__import_fetch "libs" $@)
 
 	if [ ! -f "${file}" ]; then
-		false
+		echo "Could not import: $1" > /dev/stderr && false
 		return
 	fi
 
@@ -54,7 +53,7 @@ run () {
 		if [ -f "${file}" ]; then \
 			source $(__import_fetch "commands" $@); \
 		else \
-			false; \
+			echo "Could not run: $1" > /dev/stderr && false \
 			return; \
 		fi; \
 	)
