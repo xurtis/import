@@ -61,7 +61,7 @@ __SGR_DEFAULT_COLOR=9
 # Basic SGR escapes
 
 __sgr_escape () {
-	echo -n "\x1b[$1m"
+	echo -en "\x1b[$1m"
 }
 
 __sgr_reset () {
@@ -224,5 +224,3 @@ span () {
 	echo -en $@
 	__sgr_reset
 }
-
-alias echo="echo -e"
