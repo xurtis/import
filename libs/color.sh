@@ -224,3 +224,5 @@ span () {
 	echo -en $@
 	__sgr_reset
 }
+
+alias echo="echo -e"
