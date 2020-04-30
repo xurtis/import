@@ -28,6 +28,12 @@ __import_fetch () {
 	echo "${dest}"
 }
 
+# The online version of import always fetches the latest version of a
+# library or command
+import_refresh () {
+	true
+}
+
 import () {
 	if [ "$#" -ne "1" ]; then
 		echo '`import` takes one argument' > /dev/stderr && false

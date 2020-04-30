@@ -16,6 +16,11 @@ __import_fetch () {
 	echo "${__IMPORT_INSTALL_DIR}/${kind}/${lib}.sh"
 }
 
+# Reload the import script from the source
+import_refresh () {
+	source "${__IMPORT_SCRIPT}"
+}
+
 import () {
 	if [ "$#" -ne "1" ]; then
 		echo '`import` takes one argument' > /dev/stderr && false
