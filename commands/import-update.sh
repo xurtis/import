@@ -12,5 +12,5 @@ update_import
 cat <<__END
 You may wish to run $(span $BOLD "import_refresh") to load the latest \
 version of the $(span $ITALIC "import") and $(span $ITALIC "run") \
-commands. \
+commands.
 __END
