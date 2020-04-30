@@ -7,7 +7,7 @@ To use it just add the following line to any POSIX-compatible shell
 script:
 
 ```sh
-source <(curl -Ls https://import.xurtis.pw/import.sh)
+source <(curl -Ls https://xurtis.pw/import/import.sh)
 ```
 
 Once that line is added any of the libraries provided by this repository

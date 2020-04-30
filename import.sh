@@ -18,7 +18,7 @@ import () {
 
 	mkdir -p "${cache_dir}/$(dirname "${lib}")"
 
-	src="https://import.xurtis.pw/libs/${lib}.sh"
+	src="https://xurtis.pw/import/libs/${lib}.sh"
 	dest="$(realpath -m ${cache_dir}/${lib}.sh)"
 
 	if ! curl -Ls -o "${dest}" "${src}"; then
