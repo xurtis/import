@@ -41,9 +41,9 @@ run () {
 	# Execute in a subshell
 	( \
 		. "${__IMPORT_SCRIPT}"; \
-		file=$(__import_fetch "libs" $@); \
+		file=$(__import_fetch "commands" $@); \
 		if [ -f "${file}" ]; then \
-			. $(__import_fetch "commands" $@); \
+			. "${file}"; \
 		else \
 			echo "Could not run: $1" > /dev/stderr && false \
 			return; \
