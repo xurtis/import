@@ -7,8 +7,12 @@ To use it just add the following line to any POSIX-compatible shell
 script:
 
 ```sh
-which shell_import_defined 2&>1 > /dev/null \
-		|| . <(curl -Ls https://xurtis.pw/import/import.sh)
+if ! which shell_import_defined 2&>1 > /dev/null; then
+	import_script=$(mktemp)
+	curl -Ls -o "${import_script}" https://xurtis.pw/import/import.sh
+	. "${import_script}"
+	rm "${import_script}"
+fi
 ```
 
 Once that line is added any of the libraries provided by this repository

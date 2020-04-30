@@ -2,7 +2,8 @@
 
 # Initialise a local instance of import
 
-__IMPORT_INSTALL_DIR=${0%/*}
+export __IMPORT_INSTALL_DIR=${0%/*}
+export __IMPORT_SCRIPT=$0
 
 shell_import_defined () {
 	true
@@ -40,7 +41,7 @@ run () {
 
 	# Execute in a subshell
 	( \
-		. <(curl -Ls https://xurtis.pw/import/import.sh); \
+		. "${__IMPORT_SCRIPT}"; \
 		file=$(__import_fetch "libs" $@); \
 		if [ -f "${file}" ]; then \
 			. $(__import_fetch "commands" $@); \

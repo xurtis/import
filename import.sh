@@ -52,7 +52,12 @@ run () {
 
 	# Execute in a subshell
 	( \
-		. <(curl -Ls https://xurtis.pw/import/import.sh); \
+		import_script=$(mktemp); \
+		curl -Ls \
+			-o "${import_script}" \
+			https://xurtis.pw/import/import.sh; \
+		. "${import_script}"; \
+		rm "${import_script}"; \
 		file=$(__import_fetch "libs" $@); \
 		if [ -f "${file}" ]; then \
 			. $(__import_fetch "commands" $@); \
