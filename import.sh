@@ -2,6 +2,10 @@
 #
 # Import commands from the shell repository
 
+shell_import_defined () {
+	true
+}
+
 __import_fetch () {
 	kind=$1; shift
 	lib=$1; shift

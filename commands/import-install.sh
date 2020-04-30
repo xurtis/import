@@ -10,8 +10,7 @@ echo    "to $(span $BOLD "${IMPORT_INSTALL_LOCATION}")"
 update_import
 
 cat <<__END
-To use a local copy of import add the following line to your init script
-or a script using import:
+To use a local copy of import add the following line to your init script:
 
-$(span $BOLD "which import 2&>1 > /dev/null || source ${IMPORT_INIT}")
+$(span $BOLD "source ${IMPORT_INIT}")
 __END
