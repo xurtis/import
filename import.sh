@@ -18,28 +18,44 @@ __import_fetch () {
 	dest="$(realpath -m ${cache_dir}/${kind}/${lib}.sh)"
 
 	if ! curl -Lfs -o "${dest}" "${src}"; then
-		echo "Could not find: ${lib}" && false
+		echo "Could not find: ${lib}" > /dev/stderr && false
 		return
 	fi
 
-	source "${dest}"
+	echo "${dest}"
 }
-
 
 import () {
 	if [ "$#" -ne "1" ]; then
-		echo 'Command `import` takes one argument' && false
+		echo '`import` takes one argument' > /dev/stderr && false
 		return
 	fi
 
-	__import_fetch "libs" $@
+	file=$(__import_fetch "libs" $@)
+
+	if [ ! -f "${file}" ]; then
+		false
+		return
+	fi
+
+	source "${file}"
 }
 
 run () {
 	if [ "$#" -ne "1" ]; then
-		echo 'Command `run` takes one argument' && false
+		echo '`run` takes one argument' > /dev/stderr && false
 		return
 	fi
 
-	__import_fetch "commands" $@
+	# Execute in a subshell
+	( \
+		source <(curl -Ls https://xurtis.pw/import/import.sh); \
+		file=$(__import_fetch "libs" $@); \
+		if [ -f "${file}" ]; then \
+			source $(__import_fetch "commands" $@); \
+		else \
+			false; \
+			return; \
+		fi; \
+	)
 }
