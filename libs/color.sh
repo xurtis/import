@@ -61,7 +61,7 @@ __SGR_DEFAULT_COLOR=9
 # Basic SGR escapes
 
 __sgr_escape () {
-	echo -en "\x1b[$1m"
+	printf "\033[$1m"
 }
 
 __sgr_reset () {
@@ -83,7 +83,7 @@ __sgr_background_3bit () {
 
 # 8-bit SGR colors
 __sgr_8bit () {
-	echo -n "5;$1"
+	printf "%s" "5;$1"
 }
 
 # Accepts values in [0..8)
@@ -112,17 +112,17 @@ __sgr_color_8bit () {
 
 # Accepts 3 channels from [0..256)
 __sgr_color_24bit () {
-	echo -n "2;$1;$2;$3"
+	printf "%s" "2;$1;$2;$3"
 }
 
 # Extended color modifiers
 
 __sgr_foreground_extended () {
-	echo -n "38;$1"
+	printf "%s" "38;$1"
 }
 
 __sgr_background_extended () {
-	echo -n "48;$1"
+	printf "%s" "48;$1"
 }
 
 # Expanded color constants
@@ -221,6 +221,6 @@ span () {
 	done
 
 	__sgr_escape "${full_style#;}"
-	echo -en $@
+	printf "%s" "$*"
 	__sgr_reset
 }
