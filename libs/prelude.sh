@@ -24,3 +24,6 @@ import () {
 run () (
 	__import_direct "commands" "$@"
 )
+
+# Additional prelude imports
+import module
