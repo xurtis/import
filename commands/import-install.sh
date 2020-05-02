@@ -12,7 +12,7 @@ update_import
 cat <<__END
 To use a local copy of import add the following line to your init script:
 
-$(span $BOLD ". ${IMPORT_INIT}")
+$(span $BOLD "echo ${IMPORT_INIT} && . ${IMPORT_INIT}")
 
 You may wish to run that command now
 __END

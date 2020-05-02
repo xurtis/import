@@ -2,30 +2,55 @@
 #
 # Import commands from the shell repository
 
-shell_import_defined () {
-	true
+if [ -d "${XDG_RUNTIME_DIR}" ]; then
+	__SHELL_IMPORT_CACHE_DIR="${XDG_RUNTIME_DIR}/shell-import-cache"
+else
+	__SHELL_IMPORT_CACHE_DIR="/tmp/$(id -u).shell-import-cache"
+fi
+
+# Download the library from the internet
+__import_fetch () {
+	__import_kind=$1; shift
+	__import_lib=$1; shift
+
+	mkdir -p "${__SHELL_IMPORT_CACHE_DIR}/${__import_kind}/$(dirname "${__import_lib}")"
+
+	__import_src="https://xurtis.pw/import/${__import_kind}/${__import_lib}.sh"
+	__import_dest="$(realpath -m ${__SHELL_IMPORT_CACHE_DIR}/${__import_kind}/${__import_lib}.sh)"
+
+	if curl -Lfs -o "${__import_dest}" "${__import_src}"; then
+		echo "${__import_dest}"
+	fi
+
+	unset __import_kind
+	unset __import_lib
+	unset __import_cache_dir
+	unset __import_src
+	unset __import_dest
 }
 
-__import_fetch () {
-	kind=$1; shift
-	lib=$1; shift
+# Import a library directly into the global scope
+__import_direct () {
+	__import_kind=$1; shift
+	__import_name=$1; shift
+	__import_file=$(__import_fetch "$__import_kind" "$__import_name")
 
-	if [ -d "${XDG_RUNTIME_DIR}" ]; then
-		cache_dir="${XDG_RUNTIME_DIR}/shell-import-cache"
-	else
-		cache_dir="/tmp/$(id -u).shell-import-cache"
+	if [ ! -f "${__import_file}" ]; then
+		unset __import_kind
+		unset __import_name
+		unset __import_file
+		return 1
 	fi
 
-	mkdir -p "${cache_dir}/${kind}/$(dirname "${lib}")"
+	. "${__import_file}" "$@"
+	unset __import_kind
+	unset __import_name
+	unset __import_file
+}
 
-	src="https://xurtis.pw/import/${kind}/${lib}.sh"
-	dest="$(realpath -m ${cache_dir}/${kind}/${lib}.sh)"
-
-	if ! curl -Lfs -o "${dest}" "${src}"; then
-		return
-	fi
-
-	echo "${dest}"
+# Import a library expected to end up at a particular location
+__import_to_path () {
+	true
 }
 
 # The online version of import always fetches the latest version of a
@@ -34,42 +59,5 @@ import_refresh () {
 	true
 }
 
-import () {
-	if [ "$#" -ne "1" ]; then
-		echo '`import` takes one argument' > /dev/stderr && false
-		return
-	fi
-
-	file=$(__import_fetch "libs" $@)
-
-	if [ ! -f "${file}" ]; then
-		echo "Could not import: $1" > /dev/stderr && false
-		return
-	fi
-
-	. "${file}"
-}
-
-run () {
-	if [ "$#" -ne "1" ]; then
-		echo '`run` takes one argument' > /dev/stderr && false
-		return
-	fi
-
-	# Execute in a subshell
-	( \
-		import_script=$(mktemp); \
-		curl -Ls \
-			-o "${import_script}" \
-			https://xurtis.pw/import/import.sh; \
-		. "${import_script}"; \
-		rm "${import_script}"; \
-		file=$(__import_fetch "commands" $@); \
-		if [ -f "${file}" ]; then \
-			. "${file}"; \
-		else \
-			echo "Could not run: $1" > /dev/stderr && false \
-			return; \
-		fi; \
-	)
-}
+# Import the prelude module
+__import_direct "libs" prelude
