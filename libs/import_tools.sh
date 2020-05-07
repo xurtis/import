@@ -30,5 +30,6 @@ update_import () {
 		-f "${IMPORT_UPDATE_LOCATION}" \
 		--strip-components 1
 
-	echo "${IMPORT_INIT}" && . "${IMPORT_INIT}"
+	echo "${IMPORT_INIT}"
+	. "${IMPORT_INIT}"
 }

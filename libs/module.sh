@@ -161,7 +161,8 @@ __module_load () {
 	# imports will over-write implicit variable imports
 	__module_load_specifics \
 		"${__module_load_name}" \
-		"${__module_load_visibility}"
+		"${__module_load_visibility}" \
+		"$@"
 
 	list_foreach \
 		';' "$__module_load_decl_list" \

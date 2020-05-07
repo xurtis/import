@@ -1,8 +1,8 @@
 #!/bin/sh
 set -e
 
-import import-tools
-import color
+import import_tools
+import color using span BOLD ITALIC
 
 echo -n "Updating $(span $BOLD "${IMPORT_INSTALL_LOCATION}") "
 echo    "from $(span $BOLD "${IMPORT_GITHUB_BASE}")"
