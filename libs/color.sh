@@ -69,11 +69,11 @@ sgr_escape () {
 
 fn sgr_reset
 sgr_reset () {
-	scope color
+	scope color using sgr_escape SGR_RESET
 
 	sgr_escape "${SGR_RESET}"
 
-	end_scope
+	scope_return
 }
 
 # Color modifiers
@@ -101,27 +101,27 @@ sgr_8bit () {
 # Accepts values in [0..8)
 fn sgr_bright_8bit
 sgr_bright_8bit () {
-	scope color
+	scope color using sgr_8bit
 
 	sgr_8bit $(expr "$1" "+" "8")
 
-	end_scope
+	scope_return
 }
 
 # Accepts values in [0..24)
 fn sgr_grey_8bit
 sgr_grey_8bit () {
-	scope color
+	scope color using sgr_8bit
 
 	sgr_8bit $(expr "$1" "+" "232")
 
-	end_scope
+	scope_return
 }
 
 # Accepts 3 channels from [0..6)
 fn sgr_color_8bit
 sgr_color_8bit () {
-	scope color
+	scope color using sgr_8bit
 
 	sgr_8bit $(\
 		expr \
@@ -132,7 +132,7 @@ sgr_color_8bit () {
 			")"\
 	)
 
-	end_scope
+	scope_return
 }
 
 # 24-bit SGR colors
@@ -201,58 +201,58 @@ pub const BR_WHITE_BG = $(sgr_background_extended "${SGR_BR_WHITE}")
 # One of 24 shades of grey
 pub fn grey_fg
 grey_fg () {
-	scope color
+	scope color using sgr_foreground_extended sgr_grey_8bit
 
 	sgr_foreground_extended $(sgr_grey_8bit "$1")
 
-	end_scope
+	scope_return
 }
 
 pub fn grey_bg
 grey_bg () {
-	scope color
+	scope color using sgr_background_extended sgr_background_extended
 
 	sgr_background_extended $(sgr_grey_8bit "$1")
 
-	end_scope
+	scope_return
 }
 
 # 8-bit color
 pub fn rgb8_fg
 rgb8_fg () {
-	scope color
+	scope color using sgr_foreground_extended sgr_color_8bit
 
 	sgr_foreground_extended $(sgr_color_8bit "$1" "$2" "$3")
 
-	end_scope
+	scope_return
 }
 
 pub fn rgb8_bg
 rgb8_bg () {
-	scope color
+	scope color using sgr_background_extended sgr_color_8bit
 
 	sgr_background_extended $(sgr_color_8bit "$1" "$2" "$3")
 
-	end_scope
+	scope_return
 }
 
 # 24-bit color
 pub fn rgb24_fg
 rgb24_fg () {
-	scope color
+	scope color using sgr_foreground_extended sgr_color_24bit
 
 	sgr_foreground_extended $(sgr_color_24bit "$1" "$2" "$3")
 
-	end_scope
+	scope_return
 }
 
 pub fn rgb24_bg
 rgb24_bg () {
-	scope color
+	scope color using sgr_background_extended sgr_color_24bit
 
 	sgr_background_extended $(sgr_color_24bit "$1" "$2" "$3")
 
-	end_scope
+	scope_return
 }
 
 # Multiple fonts from [0..10)
@@ -264,7 +264,7 @@ font () {
 # Apply a set of styles
 pub fn style
 style () {
-	scope color
+	scope color using sgr_escape
 
 	full_style=""
 	for style in $@; do
@@ -273,21 +273,21 @@ style () {
 
 	sgr_escape "${full_style#;}"
 
-	end_scope
+	scope_return
 }
 
 # Reset all styles
 pub fn unstyle
 unstyle () {
-	scope color
+	scope color using sgr_reset
 	sgr_reset
-	end_scope
+	scope_return
 }
 
 # Apply a set of styles to a span of text
 pub fn span
 span () {
-	scope color
+	scope color using sgr_escape sgr_reset
 
 	var full_style = ""
 	while [ "$#" -gt "1" ]; do
@@ -298,7 +298,7 @@ span () {
 	printf "%s" "$*"
 	sgr_reset
 
-	end_scope
+	scope_return
 }
 
 end_module

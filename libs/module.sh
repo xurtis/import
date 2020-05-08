@@ -624,14 +624,21 @@ fn () {
 
 # function scopes
 scope () {
-	if [ "$#" -ne 1 ]; then
-		__module_scope_ns="__global"
-	else
+	if [ "$#" -ge 0 ]; then
 		__module_scope_ns=$1; shift
+	else
+		__module_scope_ns="__global"
 	fi
 
 	__module_scope_push
-	__module_load "${__module_scope_ns}" "" "private"
+
+	if [ "$1" = "using" ]; then
+		shift
+		__module_load_specifics "${__module_scope_ns}" "private" "$@"
+	else
+		__module_load "${__module_scope_ns}" "" "private"
+	fi
+
 	__module_namespace_push_empty
 	unset __module_scope_ns
 	__module_log_state
