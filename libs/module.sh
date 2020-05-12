@@ -225,6 +225,12 @@ __module_load_single () {
 		fi
 	fi
 
+	echo "Importing:" \
+		"${__module_load_single_name}::${__module_load_single_item}" \
+		"as" \
+		"${__module_load_single_prefix}${__module_load_single_item}" \
+		> /dev/stderr
+
 	case "${__module_load_single_kind}" in
 		"const")
 			__module_scope_decl_add \
@@ -624,7 +630,7 @@ fn () {
 
 # function scopes
 scope () {
-	if [ "$#" -ge 0 ]; then
+	if [ "$#" -gt 0 ]; then
 		__module_scope_ns=$1; shift
 	else
 		__module_scope_ns="__global"
