@@ -16,6 +16,8 @@ A set of styles can be enabled by passing them as arguments to the
 function.
 
 ```sh
+import color using style unstyle BOLD ITALIC
+
 style $BOLD
 echo this text will be bold
 unstyle
@@ -26,6 +28,8 @@ echo "This $(style $BOLD $ITALIC)word$(unstyle) will be bold"
 A style can be applied to a single string using `span`.
 
 ```sh
+import color using style unstyle span BOLD ITALIC
+
 style $BOLD
 echo this text will be bold
 unstyle
