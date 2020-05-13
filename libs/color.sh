@@ -64,16 +64,12 @@ const SGR_DEFAULT_COLOR = 9
 
 fn sgr_escape
 sgr_escape () {
-	printf "\033[$1m"
+	printf "\033[%sm" "$*"
 }
 
 fn sgr_reset
 sgr_reset () {
-	scope color using sgr_escape SGR_RESET
-
-	sgr_escape "${SGR_RESET}"
-
-	scope_return
+	printf "\033[0m"
 }
 
 # Color modifiers
@@ -287,16 +283,16 @@ unstyle () {
 # Apply a set of styles to a span of text
 pub fn span
 span () {
-	scope color using sgr_escape sgr_reset
+	scope
 
 	var full_style = ""
 	while [ "$#" -gt "1" ]; do
-		full_style="${full_style};$1" shift
+		full_style="${full_style};$1"; shift
 	done
 
-	sgr_escape "${full_style#;}"
+	printf "\033[%sm" "${full_style#;}"
 	printf "%s" "$*"
-	sgr_reset
+	printf "\033[0m"
 
 	scope_return
 }
