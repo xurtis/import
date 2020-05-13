@@ -27,20 +27,19 @@ chars () {
 	const ESCAPE = "$(printf "\033")"
 
 	while [ "${#line}" -gt 0 ]; do
-		rest="${line##?}"
-		first="${line%%"$rest"}"
+		first="${line%%${ESCAPE}*}"
 
 		# Skip SGR escapes
-		if [ "${first}" = "${ESCAPE}" ]; then
-			line="${rest#*m}"
+		if [ "${#first}" -eq 0 ]; then
+			line="${line#*m}"
 			continue
 		fi
 
-		chars=$(( chars + 1 ))
-		line="${rest}"
+		chars=$(( chars + ${#first} ))
+		line="${line#"$first"}"
 	done
 
-	echo "${chars}"
+	printf "%s\n" "${chars}"
 
 	scope_return
 }
@@ -57,23 +56,23 @@ redraw () {
 	var pad_bottom = "${pad_top}"
 
 	while [ "${pad_top}" -gt 0 ]; do
-		echo
+		printf "\n"
 		pad_top=$(( pad_top - 1 ))
 	done
 
 	var inner_pad_left = "${pad_left}"
-	while IFS= read line; do
+	while IFS= read -r line; do
 		inner_pad_left="${pad_left}"
 		while [ "${inner_pad_left}" -gt 0 ]; do
 			printf " "
 			inner_pad_left=$(( inner_pad_left - 1 ))
 		done
 
-		echo "${line}"
+		printf "%s\n" "${line}"
 	done
 
 	while [ "${pad_bottom}" -gt 0 ]; do
-		echo
+		printf "\n"
 		pad_bottom=$(( pad_bottom - 1 ))
 	done
 
@@ -101,19 +100,21 @@ slide () {
 
 	render_progress
 
-	while IFS= read line; do
-		line=$(echo "${line}" | sed -e "s/\t/    /g")
+	while IFS= read -r line; do
+		line="$(printf "%s\n" "${line}" | sed -e "s/\t/    /g")"
 		length="$(chars "$line")"
 		if [ "${length}" -gt "${longest}" ]; then
 			longest="${length}"
 		fi
 
-		text="${text}${line}\n"
+		# This is a load bearing newline
+		text="${text}${line}
+"
 		lines=$(( lines + 1 ))
 	done
 
 	# Save the rendered slide
-	var slide = "$(echo "${text}" | redraw "${longest}" "${lines}")"
+	var slide = "$(printf "%s\n" "${text}" | redraw "${longest}" "${lines}")"
 	eval "__slides_SLIDE_${count}=\"\$slide\""
 	count=$(( count + 1 ))
 
@@ -147,7 +148,7 @@ show_number () {
 	clear_line
 	move_line_absolute $padding
 
-	echo "${info}"
+	printf "%s\n" "${info}"
 
 	scope_return
 }
@@ -163,7 +164,7 @@ interactive () (
 
 	set -i
 	printf "$ "
-	while IFS= read line; do
+	while IFS= read -r line; do
 		eval $line
 		printf "$ "
 	done
