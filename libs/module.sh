@@ -591,19 +591,19 @@ pub () {
 var () {
 	__module_var_name=$1; shift
 	shift # Skip '='
-	__module_var_value=$1; shift
+	__module_var_value="$1"; shift
 	__module_var_visibility=${1:-private};
 
 	if __module_in_scope; then
 		if __module_in_namespace; then
 			__module_namespace_decl_add "var" "${__module_var_visibility}" "${__module_var_name}"
-			eval "$(__module_ns_new_global "VAR" "${__module_var_name}")=\"${__module_var_value}\""
+			eval "$(__module_ns_new_global "VAR" "${__module_var_name}")=\"\$__module_var_value\""
 		else
 			__module_scope_decl_add "var" "${__module_var_name}"
 		fi
 	fi
 
-	eval "${__module_var_name}=\"${__module_var_value}\""
+	eval "${__module_var_name}=\"\$__module_var_value\""
 
 	unset __module_var_name
 	unset __module_var_value
@@ -620,14 +620,14 @@ const () {
 
 	if __module_in_namespace; then
 		__module_namespace_decl_add "const" "${__module_const_visibility}" "${__module_const_name}"
-		eval "$(__module_ns_new_global "CONST" "${__module_const_name}")=\"${__module_const_value}\""
+		eval "$(__module_ns_new_global "CONST" "${__module_const_name}")=\"\$__module_const_value\""
 	fi
 
 	if __module_in_scope; then
 		__module_scope_decl_add "var" "${__module_const_name}"
 	fi
 
-	eval "${__module_const_name}=\"${__module_const_value}\""
+	eval "${__module_const_name}=\"\$__module_const_value\""
 
 	unset __module_const_name
 	unset __module_const_value
