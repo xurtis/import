@@ -194,33 +194,37 @@ present () {
 		slide_counter_width="${#slide_counter}"
 		slide_counter="Slide $(span $BOLD $WHITE_FG "$(( current + 1 ))") of $(span $BOLD $WHITE_FG "${count}")"
 
-		move_absolute $(( HEIGHT - 2 )) 1
+		move_absolute ${HEIGHT} 1
 		clear_line
 		move_line_absolute "$(( (WIDTH - slide_counter_width) / 2 ))"
 
-		echo "${slide_counter}"
+		printf "%s" "${slide_counter}"
 
 		# Show command prompt
-
-		clear_line
 
 		stty -opost -icanon -echo
 		action=$(dd if=/dev/stdin bs=1 count=1 2>/dev/null)
 		stty cooked echo
 
 		# Respond to prompt
-
-
 		case "$action" in
 			"e")
+				tput cvvis
+				clear_screen
 				scope_return
 				;;
 			"q")
+				tput cvvis
+				clear_screen
 				scope_return
 				;;
 			"s")
+				move_line_absolute 1
+				clear_line
 				printf "> "
+				tput cvvis
 				read slide
+				tput civis
 				current=$((slide - 1))
 				;;
 			"p")
@@ -229,17 +233,20 @@ present () {
 			"n")
 				current=$((current + 1))
 				;;
-			"")
-				current=$((current + 1))
-				;;
 			"i")
+				tput cvvis
 				interactive
+				tput civis
 				;;
 		esac
 	done
 
-
+	tput cvvis
+	clear_screen
 	scope_return
 }
+
+# Disable cursor on anything that uses slides
+tput civis
 
 end_module
