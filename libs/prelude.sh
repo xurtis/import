@@ -41,6 +41,13 @@ import () {
 	use "$@"
 }
 
+# Reload a library
+reimport () {
+	if [ "$#" -eq 1 ]; then
+		instantiate_library "$1" forced
+	fi
+}
+
 # Command to run a command (executes in a subshell)
 run () (
 	__import_direct "commands" "$@"
