@@ -210,12 +210,12 @@ present () {
 		case "$action" in
 			"e")
 				tput cvvis
-				clear_screen
+				clear_display
 				scope_return
 				;;
 			"q")
 				tput cvvis
-				clear_screen
+				clear_display
 				scope_return
 				;;
 			"s")
@@ -242,7 +242,7 @@ present () {
 	done
 
 	tput cvvis
-	clear_screen
+	clear_display
 	scope_return
 }
 
