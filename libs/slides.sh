@@ -206,7 +206,7 @@ present () {
 
 		stty -opost -icanon -echo
 		action=$(dd if=/dev/stdin bs=1 count=1 2>/dev/null)
-		stty cooked
+		stty cooked echo
 
 		# Respond to prompt
 
