@@ -10,6 +10,7 @@ script:
 if ! which shell_import_defined 2&>1 > /dev/null; then
 	import_script=$(mktemp)
 	curl -Ls -o "${import_script}" https://xurtis.pw/import/import.sh
+	_="${import_script}"
 	. "${import_script}"
 	rm "${import_script}"
 fi

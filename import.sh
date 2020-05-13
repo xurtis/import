@@ -2,11 +2,17 @@
 #
 # Import commands from the shell repository
 
+export __import_src_SCRIPT=$(realpath -e $_)
+
 if [ -d "${XDG_RUNTIME_DIR}" ]; then
 	__SHELL_IMPORT_CACHE_DIR="${XDG_RUNTIME_DIR}/shell-import-cache"
 else
 	__SHELL_IMPORT_CACHE_DIR="/tmp/$(id -u).shell-import-cache"
 fi
+mkdir -p "${__SHELL_IMPORT_CACHE_DIR}"
+
+export __import_SCRIPT="${__SHELL_IMPORT_CACHE_DIR}/import.sh"
+cp "${__import_src_SCRIPT}" "${__import_SCRIPT}"
 
 # Download the library from the internet
 __import_fetch () {

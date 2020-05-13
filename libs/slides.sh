@@ -155,7 +155,8 @@ show_number () {
 # Interactive shell
 fn interactive
 interactive () (
-	echo "${__import_SCRIPT}" && . "${__import_SCRIPT}"
+	_="${__import_SCRIPT}"
+	. "${__import_SCRIPT}"
 	reimport prelude
 	reimport module
 	clear
