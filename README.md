@@ -148,6 +148,10 @@ name of the script.
 An `import` statement can be extended with a `using` statement followed
 by a list of item names to be imported without prefixing their names.
 
+An alternative to `import ... using ...` is `from ... use ...` which
+will only import the explicitly named items keeping the scope less
+cluttered and faster to load.
+
 #### Constants
 
 The easiest items to create in a module are constants. An imported
