@@ -89,8 +89,8 @@ factorial () {
 			echo "1"
 			;;
 		*)
-			var sub_factor = "$(factorial "$(($factor - 1))")"
-			echo "$(($factor * $sub_factor))"
+			var sub_factor = "$(factorial $((factor - 1)))"
+			echo $((factor * sub_factor))
 			;;
 	esac
 	scope_return

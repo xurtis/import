@@ -36,7 +36,7 @@ chars () {
 			continue
 		fi
 
-		chars=$(($chars + 1))
+		chars=$(( chars + 1 ))
 		line="${rest}"
 	done
 
@@ -52,13 +52,13 @@ redraw () {
 	var width = "$1"; shift
 	var height = "$1"; shift
 
-	var pad_left = $((($WIDTH - $width) / 2))
-	var pad_top = $((( ($HEIGHT - $height) - 2 ) / 2))
+	var pad_left = $(( (WIDTH - width) / 2 ))
+	var pad_top = $(( ( (HEIGHT - height) - 2 ) / 2 ))
 	var pad_bottom = "${pad_top}"
 
 	while [ "${pad_top}" -gt 0 ]; do
 		echo
-		pad_top=$(($pad_top - 1))
+		pad_top=$(( pad_top - 1 ))
 	done
 
 	var inner_pad_left = "${pad_left}"
@@ -66,7 +66,7 @@ redraw () {
 		inner_pad_left="${pad_left}"
 		while [ "${inner_pad_left}" -gt 0 ]; do
 			printf " "
-			inner_pad_left=$(($inner_pad_left - 1))
+			inner_pad_left=$(( inner_pad_left - 1 ))
 		done
 
 		echo "${line}"
@@ -74,7 +74,7 @@ redraw () {
 
 	while [ "${pad_bottom}" -gt 0 ]; do
 		echo
-		pad_bottom=$(($pad_bottom - 1))
+		pad_bottom=$(( pad_bottom - 1 ))
 	done
 
 	scope_return
@@ -86,7 +86,7 @@ render_progress () {
 	scope slides using clear_line move_line_absolute count
 	clear_line
 	move_line_absolute 0
-	printf "Rendering slide %d..." "$(($count + 1))"
+	printf "Rendering slide %d..." "$(( count + 1 ))"
 	scope_return
 }
 
@@ -109,13 +109,13 @@ slide () {
 		fi
 
 		text="${text}${line}\n"
-		lines=$(($lines + 1))
+		lines=$(( lines + 1 ))
 	done
 
 	# Save the rendered slide
 	var slide = "$(echo "${text}" | redraw "${longest}" "${lines}")"
 	eval "__slides_SLIDE_${count}=\"\$slide\""
-	count=$(($count + 1))
+	count=$(( count + 1 ))
 
 	scope_return
 }
@@ -137,13 +137,13 @@ show_number () {
 
 	var number = "$1"; shift
 
-	var info = "Slide $((${number} + 1)) of ${count}"
+	var info = "Slide $(( number + 1 )) of ${count}"
 	var info_width = "${#info}"
-	info="Slide $(span $BOLD $WHITE_FG "$((${number} + 1))") of $(span $BOLD $WHITE_FG "${count}")"
+	info="Slide $(span $BOLD $WHITE_FG "$(( number + 1 ))") of $(span $BOLD $WHITE_FG "${count}")"
 
-	var padding = "$(( ($WIDTH - $info_width) / 2 ))"
+	var padding = "$(( (WIDTH - info_width) / 2 ))"
 
-	move_absolute $(($HEIGHT - 2)) 1
+	move_absolute $(( HEIGHT - 2 )) 1
 	clear_line
 	move_line_absolute $padding
 
@@ -175,6 +175,7 @@ present () {
 	scope slides
 	var current = 0
 	var action = 0
+	var slide = 0
 	var slide_counter = ""
 	var slide_counter_width = 0
 
@@ -189,13 +190,13 @@ present () {
 
 		# Show slide number
 
-		slide_counter="Slide $((${current} + 1)) of ${count}"
+		slide_counter="Slide $(( current + 1 )) of ${count}"
 		slide_counter_width="${#slide_counter}"
-		slide_counter="Slide $(span $BOLD $WHITE_FG "$((${current} + 1))") of $(span $BOLD $WHITE_FG "${count}")"
+		slide_counter="Slide $(span $BOLD $WHITE_FG "$(( current + 1 ))") of $(span $BOLD $WHITE_FG "${count}")"
 
-		move_absolute $(($HEIGHT - 2)) 1
+		move_absolute $(( HEIGHT - 2 )) 1
 		clear_line
-		move_line_absolute "$(( ($WIDTH - $slide_counter_width) / 2 ))"
+		move_line_absolute "$(( (WIDTH - slide_counter_width) / 2 ))"
 
 		echo "${slide_counter}"
 
@@ -222,25 +223,25 @@ present () {
 				scope_return
 				;;
 			"s")
-				current=$(($slide - 1))
+				current=$((slide - 1))
 				;;
 			"slide")
-				current=$(($slide - 1))
+				current=$((slide - 1))
 				;;
 			"p")
-				current=$(($current - 1))
+				current=$((current - 1))
 				;;
 			"prev")
-				current=$(($current - 1))
+				current=$((current - 1))
 				;;
 			"n")
-				current=$(($current + 1))
+				current=$((current + 1))
 				;;
 			"next")
-				current=$(($current + 1))
+				current=$((current + 1))
 				;;
 			"")
-				current=$(($current + 1))
+				current=$((current + 1))
 				;;
 			"i")
 				interactive

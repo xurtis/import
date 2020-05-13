@@ -350,7 +350,7 @@ __module_scope_push () {
 }
 
 __module_scope_new () {
-	__module_SCOPE_DEPTH=$(($__module_SCOPE_DEPTH + 1))
+	__module_SCOPE_DEPTH=$((__module_SCOPE_DEPTH + 1))
 	__module_SCOPE_STACK=$(list_push ';' "${__module_SCOPE_STACK}" "")
 }
 
@@ -384,7 +384,7 @@ __module_scope_pop () {
 
 __module_scope_remove () {
 	__module_SCOPE_STACK=$(list_start ';' "${__module_SCOPE_STACK}")
-	__module_SCOPE_DEPTH=$(($__module_SCOPE_DEPTH - 1))
+	__module_SCOPE_DEPTH=$((__module_SCOPE_DEPTH - 1))
 }
 
 # Discard the contents of the current scope
@@ -449,7 +449,7 @@ __module_decl_apply_foreach () {
 	while [ "${__module_apply_rotate}" -gt 0 ]; do
 		__module_apply_rotate_first="$1"; shift
 		set -- "$@" "${__module_apply_rotate_first}"
-		__module_apply_rotate=$(($__module_apply_rotate - 1))
+		__module_apply_rotate=$((__module_apply_rotate - 1))
 		unset __module_apply_rotate_first
 	done
 
