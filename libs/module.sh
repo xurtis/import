@@ -225,20 +225,28 @@ __module_load_single () {
 		fi
 	fi
 
-	echo "Importing:" \
-		"${__module_load_single_name}::${__module_load_single_item}" \
-		"as" \
-		"${__module_load_single_prefix}${__module_load_single_item}" \
-		> /dev/stderr
-
 	case "${__module_load_single_kind}" in
 		"const")
+			if __module_in_namespace; then
+				__module_namespace_decl_add \
+					"const" \
+					"private" \
+					"${__module_load_single_prefix}${__module_load_single_item}"
+				eval "$(__module_ns_new_global "CONST" "${__module_load_single_prefix}${__module_load_single_item}")=\$$(__module_ns_global_name "${__module_load_single_name}" "CONST" "${__module_load_single_item}")"
+			fi
 			__module_scope_decl_add \
 				"var" \
 				"${__module_load_single_prefix}${__module_load_single_item}"
 			eval "${__module_load_single_prefix}${__module_load_single_item}=\$$(__module_ns_global_name "${__module_load_single_name}" "CONST" "${__module_load_single_item}")"
 			;;
 		"var")
+			if __module_in_namespace; then
+				__module_namespace_decl_add \
+					"dup" \
+					"private" \
+					"${__module_load_single_prefix}${__module_load_single_item}" \
+					"$(__module_ns_global_name "${__module_load_single_name}" "VAR" "${__module_load_single_item}")"
+			fi
 			__module_scope_decl_add \
 				"dup" \
 				"${__module_load_single_prefix}${__module_load_single_item}" \
@@ -246,11 +254,34 @@ __module_load_single () {
 			eval "${__module_load_single_prefix}${__module_load_single_item}=\$$(__module_ns_global_name "${__module_load_single_name}" "VAR" "${__module_load_single_item}")"
 			;;
 		"fn")
+			if __module_in_namespace; then
+				__module_namespace_decl_add \
+					"alias" \
+					"private" \
+					"${__module_load_single_prefix}${__module_load_single_item}" \
+					"$(__module_ns_global_name "${__module_load_single_name}" "FN" "${__module_load_single_item}")"
+			fi
 			__module_scope_decl_add \
 				"alias" \
 				"${__module_load_single_prefix}${__module_load_single_item}" \
 				"$(__module_ns_global_name "${__module_load_single_name}" "FN" "${__module_load_single_item}")"
 			eval alias "${__module_load_single_prefix}${__module_load_single_item}=$(__module_ns_global_name "${__module_load_single_name}" "FN" "${__module_load_single_item}")"
+			;;
+		"alias")
+			__module_load_single_target=$1; shift
+			__module_scope_decl_add \
+				"alias" \
+				"${__module_load_single_prefix}${__module_load_single_item}" \
+				"${__module_load_single_target}"
+			eval alias "${__module_load_single_prefix}${__module_load_single_item}=${__module_load_single_target}"
+			;;
+		"dup")
+			__module_load_single_target=$1; shift
+			__module_scope_decl_add \
+				"dup" \
+				"${__module_load_single_prefix}${__module_load_single_item}" \
+				"${__module_load_single_target}"
+			eval "${__module_load_single_prefix}${__module_load_single_item}=\$${__module_load_single_target}"
 			;;
 	esac
 
@@ -261,6 +292,7 @@ __module_load_single () {
 	unset __module_load_single_kind
 	unset __module_load_single_visibility
 	unset __module_load_single_item
+	unset __module_load_single_target
 }
 
 __module_load_single_direct () {
@@ -278,7 +310,8 @@ __module_load_single_direct () {
 			"${__module_load_single_accept_visibility}" \
 			"${__module_load_single_kind}" \
 			"${__module_load_single_visibility}" \
-			"${__module_load_single_item}"
+			"${__module_load_single_item}" \
+			"$@"
 	fi
 
 	unset __module_load_single_name
@@ -636,6 +669,7 @@ scope () {
 		__module_scope_ns="__global"
 	fi
 
+	__module_namespace_push_empty
 	__module_scope_push
 
 	if [ "$1" = "using" ]; then
@@ -645,15 +679,14 @@ scope () {
 		__module_load "${__module_scope_ns}" "" "private"
 	fi
 
-	__module_namespace_push_empty
 	unset __module_scope_ns
 	__module_log_state
 }
 
 end_scope () {
 	if [ "${__module_SCOPE_DEPTH}" -gt 0 ]; then
-		__module_namespace_pop
 		__module_scope_pop
+		__module_namespace_pop
 		__module_log_state
 	fi
 }
