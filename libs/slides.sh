@@ -3,7 +3,7 @@
 # Module for creating and presenting slides
 module "slides"
 
-from color use span BOLD WHITE_FG
+from color use span BOLD BR_WHITE_FG
 from term use \
 	move_absolute \
 	move_line_absolute \
@@ -52,7 +52,7 @@ redraw () {
 	var height = "$1"; shift
 
 	var pad_left = $(( (WIDTH - width) / 2 ))
-	var pad_top = $(( ( (HEIGHT - height) - 2 ) / 2 ))
+	var pad_top = $(( ( (HEIGHT - 1) - height) / 2 ))
 	var pad_bottom = "${pad_top}"
 
 	while [ "${pad_top}" -gt 0 ]; do
@@ -121,48 +121,27 @@ slide () {
 	scope_return
 }
 
-# Display a slide number
-fn show_number
-show_number () {
-	scope slides using \
-		count \
-		HEIGHT \
-		WIDTH \
-		move_absolute \
-		move_line_aboslute \
-		clear_line \
-		span \
-		BOLD \
-		WHITE_FG
-
-
-	var number = "$1"; shift
-
-	var info = "Slide $(( number + 1 )) of ${count}"
-	var info_width = "${#info}"
-	info="Slide $(span $BOLD $WHITE_FG "$(( number + 1 ))") of $(span $BOLD $WHITE_FG "${count}")"
-
-	var padding = "$(( (WIDTH - info_width) / 2 ))"
-
-	move_absolute $(( HEIGHT - 2 )) 1
-	clear_line
-	move_line_absolute $padding
-
-	printf "%s\n" "${info}"
-
-	scope_return
-}
-
 # Interactive shell
 fn interactive
 interactive () (
+	for name in $(set | grep '^__import' | sed 's/=.*$//'); do
+		if [ "$name" != "__import_SCRIPT" ]; then
+			unset "$name"
+		fi
+	done
+	for name in $(set | grep '^__module' | sed 's/=.*$//'); do
+		unset "$name"
+	done
+
 	_="${__import_SCRIPT}"
 	. "${__import_SCRIPT}"
 	reimport prelude
 	reimport module
+
+	tabs 4
+	alias pcat="pygmentize -O style=monokai"
 	clear
 
-	set -i
 	printf "$ "
 	while IFS= read -r line; do
 		eval $line
@@ -193,8 +172,7 @@ present () {
 
 		slide_counter="Slide $(( current + 1 )) of ${count}"
 		slide_counter_width="${#slide_counter}"
-		slide_counter="Slide $(span $BOLD $WHITE_FG "$(( current + 1 ))") of $(span $BOLD $WHITE_FG "${count}")"
-
+		slide_counter="Slide $(span $BOLD $BR_WHITE_FG "$(( current + 1))") of $(span $BOLD $BR_WHITE_FG "${count}")" 
 		move_absolute ${HEIGHT} 1
 		clear_line
 		move_line_absolute "$(( (WIDTH - slide_counter_width) / 2 ))"
@@ -203,7 +181,8 @@ present () {
 
 		# Show command prompt
 
-		stty -opost -icanon -echo
+		# stty -opost -icanon -echo
+		stty raw -echo
 		action=$(dd if=/dev/stdin bs=1 count=1 2>/dev/null)
 		stty cooked echo
 
