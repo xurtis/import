@@ -508,9 +508,20 @@ if [ "${__module_STATE_LOG+set}" != "set" ]; then
 	__module_STATE_LOG="$(realpath -e "$PWD")/.module-state"
 fi
 __module_log_state () {
-	set | grep -e "^__module" | sort > "${__module_STATE_LOG}"
+	if [ "${__module_STATE_LOG_ENABLED}" = "true" ]; then
+		set | grep -e "^__module" | sort > "${__module_STATE_LOG}"
+	fi
 }
 __module_log_state
+
+# Functions to enable and disable logging
+module_state_log_enable () {
+	__module_STATE_LOG_ENABLED=true
+}
+
+module_state_log_disable () {
+	__module_STATE_LOG_ENABLED=false
+}
 
 # External commands
 
