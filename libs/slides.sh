@@ -160,6 +160,9 @@ present () {
 	var slide_counter_width = 0
 
 	while [ "$current" -lt "$count" ]; do
+		if [ "$current" -lt 0 ]; then
+			current=0
+		fi
 
 		# Show the slide content
 
@@ -217,6 +220,40 @@ present () {
 				tput cvvis
 				interactive
 				tput civis
+				;;
+			"")
+				action=$(dd if=/dev/stdin bs=1 count=1 2>/dev/null)
+				if [ "$action" = "[" ]; then
+					action=$(dd if=/dev/stdin bs=1 count=1 2>/dev/null)
+					case "$action" in
+						"D")
+							# Left arrow
+							current=$((current - 1))
+							;;
+						"5")
+							# Page up
+							action=$(dd if=/dev/stdin bs=1 count=1 2>/dev/null)
+							current=$((current - 1))
+							;;
+						"C")
+							# Right arrow
+							current=$((current + 1))
+							;;
+						"6")
+							# Page down
+							action=$(dd if=/dev/stdin bs=1 count=1 2>/dev/null)
+							current=$((current + 1))
+							;;
+						"H")
+							# Home
+							current=0
+							;;
+						"F")
+							# End
+							current=$((count - 1))
+							;;
+					esac
+				fi
 				;;
 		esac
 	done
