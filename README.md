@@ -9,7 +9,7 @@ script:
 ```sh
 if ! which shell_import_defined 2&>1 > /dev/null; then
 	import_script=$(mktemp)
-	curl -Ls -o "${import_script}" https://xurtis.pw/import/import.sh
+	curl -Ls -o "${import_script}" https://import.xurt.is/import.sh
 	_="${import_script}"
 	. "${import_script}"
 	rm "${import_script}"
@@ -36,7 +36,7 @@ You can maintain a local install of `import` by running the following in
 any terminal:
 
 ```sh
-curl -Ls "https://xurtis.pw/import/local-import.sh" | sh
+curl -Ls "https://import.xurt.is/local-import.sh" | sh
 ```
 
 The command will print an alternative to add to scripts to use your

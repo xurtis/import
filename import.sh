@@ -21,7 +21,7 @@ __import_fetch () {
 
 	mkdir -p "${__SHELL_IMPORT_CACHE_DIR}/${__import_kind}/$(dirname "${__import_lib}")"
 
-	__import_src="https://xurtis.pw/import/${__import_kind}/${__import_lib}.sh"
+	__import_src="https://import.xurt.is/${__import_kind}/${__import_lib}.sh"
 	__import_dest="$(realpath -m ${__SHELL_IMPORT_CACHE_DIR}/${__import_kind}/${__import_lib}.sh)"
 
 	if curl -Lfs -o "${__import_dest}" "${__import_src}"; then
