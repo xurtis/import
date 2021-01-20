@@ -124,32 +124,7 @@ slide () {
 # Interactive shell
 fn interactive
 interactive () (
-	for name in $(set | grep '^__import' | sed 's/=.*$//'); do
-		if [ "$name" != "__import_SCRIPT" ]; then
-			unset "$name"
-		fi
-	done
-	for name in $(set | grep '^__module' | sed 's/=.*$//'); do
-		unset "$name"
-	done
-
-	_="${__import_SCRIPT}"
-	. "${__import_SCRIPT}"
-	reimport prelude
-	reimport module
-
-	tabs 4
-	alias pcat="pygmentize -O style=monokai"
-	alias less=less -R
-	clear
-
-	module interactive
-
-	printf "$ "
-	while IFS= read -r line; do
-		eval $line
-		printf "$ "
-	done
+	ENV=.profile dash -i
 )
 
 # Present the slide show

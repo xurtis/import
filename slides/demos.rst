@@ -14,7 +14,7 @@ Function demo
 .. code:: bash
 
     cd function
-    pcat install_file.sh | less -R
+    pcat install_file.sh
     tree
     . ./install_file.sh
     install_file from_dir/file_one to_dir/file_two
@@ -22,7 +22,7 @@ Function demo
     rm -rf to_dir
     install_many from_dir to_dir file_one file_two file_three
     tree
-    pcat install_file.sh | less -R
+    pcat install_file.sh
 
 Scoped functions demo
 =====================
@@ -33,14 +33,14 @@ Scoped functions demo
 
     cd function-scope
 
-    pcat func_vars.sh | less -R
+    pcat func_vars.sh
     . ./func_vars.sh
     func1
-    # uncomment set | grep '^__module_SCOPE'
+    # uncomment fn_vars
     . ./func_vars.sh
     func1
 
-    pcat install_file.sh | less -R
+    pcat install_file.sh
     . ./install_file.sh
     install_many from_dir to_dir file_one file_two file_three
 
@@ -54,14 +54,14 @@ Modules demo
 
    cd modules
 
-   pcat color.sh | less -R
-   uncomment set | grep '^__module'
+   pcat color.sh
+   mod_vars
    . ./color.sh
-   uncomment set | grep '^__module'
+   mod_vars
    echo "This is $(span $FG_CYAN "cyan")"
    echo "This is $(span $FG_RED "red")"
    use color using span FG_CYAN
-   uncomment set | grep '^__module'
+   mod_vars
    echo "This is $(span $FG_CYAN "cyan")"
    echo "This is $(span $FG_RED "red")"
    echo "This is $(span $color_FG_RED "red")"
@@ -76,7 +76,7 @@ import demo
 .. code:: bash
 
    cd modules
-   pcat main.sh | less -R
+   pcat main.sh
    ./main.sh
 
 ----

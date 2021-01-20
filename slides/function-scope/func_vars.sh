@@ -6,7 +6,7 @@ show_vars() {
 		"${x-UNDEFINED}" \
 		"${y-UNDEFINED}" \
 		"${z-UNDEFINED}"
-	# set | grep '^__module_SCOPE'
+	# fn_vars
 	# echo
 }
 
