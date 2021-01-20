@@ -140,7 +140,10 @@ interactive () (
 
 	tabs 4
 	alias pcat="pygmentize -O style=monokai"
+	alias less=less -R
 	clear
+
+	module interactive
 
 	printf "$ "
 	while IFS= read -r line; do

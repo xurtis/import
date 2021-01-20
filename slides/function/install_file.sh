@@ -1,20 +1,15 @@
 install_file () {
-	scope; var src = $1; var dest = $2;
+	src=$1; dest=$2;
 	mkdir -p "${dest%/*}"
 	cp -l "${src}" "${dest}"
-	scope_return
 }
 
 install_many () {
-	scope; var src = $1; var dest = $2; shift 3
-	var src_file = ""
-	var dest_file = ""
+	src=$1; dest=$2; shift 2
 
 	for file in "$@"; do
 		src_file="${src%/}/${file#/}"
 		dest_file="${dest%/}/${file#/}"
 		install_file "$src_file" "$dest_file"
 	done
-
-	scope_return
 }
