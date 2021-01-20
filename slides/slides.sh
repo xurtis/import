@@ -197,16 +197,6 @@ slide <<- __slide
 	$(span $BOLD $BR_WHITE_FG "Function demo")
 __slide
 
-# 2.3 Example 2 - recursion
-# slide <<- __slide
-# 	$(span $BOLD $BR_WHITE_FG "Recursion demo")
-# __slide
-
-# 2.4 Example 4 - external modules
-# slide <<- __slide
-# 	$(span $BOLD $BR_WHITE_FG "Source demo")
-# __slide
-
 # 3 Function scope
 
 slide <<- __slide

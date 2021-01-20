@@ -78,28 +78,3 @@ import demo
    cd modules
    pcat main.sh
    ./main.sh
-
-----
-
-Recursion demo
-==============
-
-.. This demonstrates that subshelled functions only use *copies* of
-   variables so can't mutate the outer scope
-
-.. Maybe drop this one?
-
-.. code:: bash
-
-    cd recursion
-    pcat factorial.sh | less -R
-    . ./factorial.sh
-    factorial 5
-
-Source demo
-===========
-
-.. This demonstrates that variables used in other scripts can cause
-   issue when sourced.
-
-   Maybe drop this one too?
